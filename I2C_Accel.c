@@ -106,13 +106,13 @@ void init_MMA8452_conduct(void)
 	i2c_senddata(0x1D, pulse_cfg, sizeof pulse_cfg);
 
 	/* Set X, Y, Z Thresholds to 1.575, 1.575, 1.575g Respectively */
-	uint8_t pulse_thsx[] = {0x23, 0x19};
+	uint8_t pulse_thsx[] = {0x23, 0x10};
 	i2c_senddata(0x1D, pulse_thsx, sizeof pulse_thsx);
 
-	uint8_t pulse_thsy[] = {0x24, 0x19};
+	uint8_t pulse_thsy[] = {0x24, 0x10};
 	i2c_senddata(0x1D, pulse_thsy, sizeof pulse_thsy);
 
-	uint8_t pulse_thsz[] = {0x25, 0x19};
+	uint8_t pulse_thsz[] = {0x25, 0x10};
 	i2c_senddata(0x1D, pulse_thsz, sizeof pulse_thsz);
 
 	/* Set time limit for tap detection to 50 ms, normal mode, no lpf */
@@ -121,7 +121,7 @@ void init_MMA8452_conduct(void)
 	i2c_senddata(0x1D, pulse_tmlt, sizeof pulse_tmlt);
 
 	/* Set latency time to ?? ms */
-	uint8_t pulse_ltcy[] = {0x27, 0x02};
+	uint8_t pulse_ltcy[] = {0x27, 0xff};
 	i2c_senddata(0x1D, pulse_tmlt, sizeof pulse_tmlt);
 
 	/* Route INT1 to System Interrupt */
@@ -136,8 +136,7 @@ void init_MMA8452_conduct(void)
 	i2c_recvdata(0x1D, temp, sizeof temp);
 
 	/* temp is now equal to the value at 0x2A */
-	temp[0] |= 0x01;
-	uint8_t cmd[] = {0x2A, temp[0]};
+	uint8_t cmd[] = {0x2A, 0x09};
 	i2c_senddata(0x1D, cmd, sizeof cmd);
 
 	return;

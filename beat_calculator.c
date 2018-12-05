@@ -3,6 +3,7 @@
 #include <string.h>
 void display1(const char *s);
 void display2(const char *s);
+void EXTI0_1_IRQHandler(void);
 
 int last4[4] = {60000,60000,60000,60000};
 int time_since = 0;
@@ -23,7 +24,8 @@ void calculate_BPM(void){
 }
 
 
-void INSERT_NAME_OF_INTERRUPT(void){
+void EXTI0_1_IRQHandler(void){
+
     last4[current_pos++] = time_since;
 
     time_since = 0;
@@ -34,9 +36,17 @@ void INSERT_NAME_OF_INTERRUPT(void){
         current_pos = 0;
     }
 
-    int useless;
-    useless = TIM2->CCR1;
-    useless = TIM2->CCR2;
+
+    dma3_init();
+
+    nano_wait(7755000);
+
+    dma_clear();
+
+
+    EXTI->PR |= EXTI_PR_PR0;
+
+    return;
 }
 
 /* TIM3_IRQHandler

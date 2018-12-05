@@ -139,11 +139,6 @@ void display1_dma(const char *s) {
 }
 
 //===========================================================================
-// Display a string on line 2 by using DMA to write to SPI.
-void display2_dma(const char *s) {
-}
-
-//===========================================================================
 // Display a string on line 1 by writing to the DMA source.
 void display1(const char *s) {
     short int temp;

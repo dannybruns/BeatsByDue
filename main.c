@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    main.c
-  * @author  Ac6
+  * @author  My Name Jeff
   * @version V1.0
   * @date    01-December-2013
   * @brief   Default main function.
@@ -11,31 +11,25 @@
 
 #include "stm32f0xx.h"
 #include "stm32f0_discovery.h"
-
+#include <string.h>
+#include <stdlib.h> // for strtoul()
 
 int main(void)
 {
-	/* DATA CAPTURE SETUP CODE */
-
-	init_ADC();
-	init_DMA();
-
-	//Enable ADC
-	ADC1->CR |= ADC_CR_ADEN;
-
-	//Ready ADC
-	while(!(RCC->CR2 & RCC_CR2_HSI14RDY));
-	while(!(ADC1->ISR & ADC_ISR_ADRDY));
-	while((ADC1->CR & ADC_CR_ADSTART));
-
-	//Enable DMA
-	DMA1_Channel1->CCR |= DMA_CCR_EN;
-
-	//Fire it up!
-	ADC1->CR |= ADC_CR_ADSTART;
+	init_lcd();					//Begin SPI communication to the LCD Display
+	tim3_init();				//Begin counting on tim3
+	en_interrupt();				//Enable external interrupt on PA0
+	tim6_init();				//Begin counting on tim6
+	dac_init();					//Enable DAC
+	init_I2C();					//Initialize I2C communication with the accelerometer
+	init_MMA8452_conduct();		//Set control registers of the MMA8452 Accelerometer
 
 	for(;;)
 	{
-		asm("wfi");
+		asm("wfi");				//Wait for an interrupt
 	}
 }
+
+
+
+
